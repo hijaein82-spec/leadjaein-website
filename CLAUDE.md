@@ -42,10 +42,10 @@
 
 ## 수정 대기 항목
 
-### P1 — 라이브 장애 (긴급)
+### P1 — 라이브 장애  ✅ 2026-08-27 완료 (커밋 e8be707)
 
-- [ ] **Cloudflare 잔재 제거** — `email-decode.min.js`(404), Cloudflare Insights 비콘 삭제. 난독화된 이메일을 `mailto:` 링크로 복구. 현재 푸터에 `[email protected]`로 표시되고 링크는 404이며, 방문자 데이터가 무관한 Cloudflare 계정으로 전송되고 있다.
-- [ ] **이메일 오타 수정** — `hjjaein82@gmail.com` → `hijaein82@gmail.com`
+- [x] **Cloudflare 잔재 제거** — `email-decode.min.js`(404), Cloudflare Insights 비콘 삭제. 난독화된 이메일을 `mailto:` 링크로 복구. 현재 푸터에 `[email protected]`로 표시되고 링크는 404이며, 방문자 데이터가 무관한 Cloudflare 계정으로 전송되고 있다.
+- [x] **이메일 오타 수정** — `hjjaein82@gmail.com` → `hijaein82@gmail.com`
 
 ### P2 — 품질
 

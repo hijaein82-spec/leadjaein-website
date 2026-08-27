@@ -1,0 +1,8 @@
+# Git LFS 설정 비활성화본 — 되살리지 말 것 (CLAUDE.md 주의사항 참고)
+.gitattributes.bak
+
+# 어디서도 참조되지 않는 썸네일 (og:image로 쓸 경우 이 줄을 지울 것)
+.thumbnail.jpg
+
+# 개인 설정
+.claude/settings.local.json

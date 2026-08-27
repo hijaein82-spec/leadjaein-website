@@ -810,7 +810,7 @@
     <div class="r">№ 0014-3 · est. 2024</div>
   </div>
   <div class="city">
-    <span class="live">Seoul 03:42</span>
+    <span class="live">Seoul <span id="seoul-clock">--:--</span></span>
     <span></span>
   </div>
   <nav class="nav-cta">
@@ -1080,7 +1080,7 @@
       Business Reg. No. 671-11-02432 · CEO Jae-in Choi<br>
       621-202, 27, Jungdong-ro 280beon-gil, Wonmi-gu,<br>
       Bucheon-si, Gyeonggi-do, 14523, Republic of Korea<br>
-      T. <a href="tel:1533-5967">1533-5967</a> · <a href="mailto:hjjaein82@gmail.com">hjjaein82@gmail.com</a>
+      T. <a href="tel:1533-5967">1533-5967</a> · <a href="/cdn-cgi/l/email-protection#87efedede6e2eee9bfb5c7e0eae6eeeba9e4e8ea"><span class="__cf_email__" data-cfemail="92faf8f8f3f7fbfcaaa0d2f5fff3fbfebcf1fdff">[email&#160;protected]</span></a>
     </div>
     <div class="info-r">
       Management Consulting
@@ -1093,7 +1093,7 @@
   </div>
 </section>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll reveal — fade + rise, one-shot per element
   (function () {
     var els = document.querySelectorAll('.reveal');
@@ -1113,6 +1113,38 @@
       rootMargin: '0px 0px -8% 0px'
     });
     els.forEach(function (el) { io.observe(el); });
+  })();
+
+  // Live Seoul clock in the header
+  (function () {
+    var el = document.getElementById('seoul-clock');
+    if (!el) return;
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function tick() {
+      // Compute Seoul (KST, UTC+9) time regardless of viewer's timezone
+      var parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Seoul',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }).formatToParts(new Date());
+      var h = '00', m = '00';
+      parts.forEach(function (p) {
+        if (p.type === 'hour') h = p.value;
+        if (p.type === 'minute') m = p.value;
+      });
+      // Guard against '24' from some locales
+      if (h === '24') h = '00';
+      el.textContent = h + ':' + m;
+    }
+    tick();
+    // Re-sync on the next minute boundary, then every 60s
+    var now = new Date();
+    var msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+    setTimeout(function () {
+      tick();
+      setInterval(tick, 60000);
+    }, msToNextMinute);
   })();
 
   // Hide topbar when the CTA section (#consultation) is >=50% in view
@@ -1136,5 +1168,6 @@
 
 </script>
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 </body>
 </html>

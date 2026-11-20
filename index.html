@@ -19,6 +19,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0;}
   html, body { background: var(--bg); color: var(--fg); font-family: 'Inter Tight', sans-serif; font-weight: 400; -webkit-font-smoothing: antialiased; font-feature-settings: "ss01";}
   a { color: inherit; text-decoration: none;}
+  button { font: inherit; color: inherit;}
   .mono { font-family: 'PT Mono', monospace;}
   ::selection { background: var(--red); color: var(--bg);}
 
@@ -641,7 +642,7 @@
   /* ============================================================
      APPLY FORM — page 5 (dark)
   ============================================================ */
-  .apply { grid-column: 1 / -1; position: relative; scroll-margin-top: 112px;}
+  .apply { position: relative;}
   .apply-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px 24px;}
   .fld { display: flex; flex-direction: column; gap: 10px;}
   .fld.c6 { grid-column: span 6;}
@@ -738,6 +739,46 @@
   .apply-done p { font-size: 15px; line-height: 1.7; color: rgba(255, 255, 255, 0.75);}
   .apply-done a { color: #EAAC00;}
   [hidden] { display: none !important;}
+
+  /* ============================================================
+     APPLY MODAL
+  ============================================================ */
+  .modal {
+    border: 0; padding: 0; background: transparent; color: #ffffff;
+    width: min(780px, calc(100vw - 48px));
+    max-height: calc(100vh - 64px);
+    overflow: visible;
+    /* 전역 * { margin: 0 } 이 dialog 기본 margin:auto 를 지우므로 다시 지정 */
+    margin: auto;
+  }
+  .modal::backdrop { background: rgba(0, 0, 0, 0.78);}
+  .modal-card {
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    padding: 42px 44px 46px;
+  }
+  .modal-head { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 38px;}
+  .modal-heading { flex: 1 1 auto;}
+  .modal-label {
+    font-family: 'PT Mono'; font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #EAAC00; margin-bottom: 14px;
+  }
+  .modal-title {
+    font-size: clamp(26px, 3.2vw, 38px); font-weight: 500;
+    letter-spacing: -0.03em; line-height: 1.1;
+  }
+  .modal-sub { margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: rgba(255, 255, 255, 0.6);}
+  .modal-close {
+    flex: 0 0 auto; width: 42px; height: 42px; cursor: pointer;
+    background: transparent; border: 1px solid rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.7); font-size: 22px; line-height: 1;
+    transition: border-color 0.18s ease, color 0.18s ease;
+  }
+  .modal-close:hover { border-color: #EAAC00; color: #EAAC00;}
+  .modal-close:focus-visible { outline: 2px solid #EAAC00; outline-offset: 2px;}
+  body.modal-open { overflow: hidden;}
 
   /* Business info block — legal footer */
   .p5-legal {
@@ -872,12 +913,15 @@
     .p5-cta { width: 100%; justify-content: space-between; padding: 20px 24px; font-size: 15px;}
     .p5-cta.p5-cta-tel { justify-content: center; gap: 10px;}
     .p5-signature { margin-top: 48px; font-size: 10px;}
-    .apply { scroll-margin-top: 164px;}
     .apply-grid { gap: 24px 16px;}
     .fld.c6 { grid-column: 1 / -1;}
     .apply-actions { flex-direction: column; gap: 12px;}
     .apply-submit { width: 100%; justify-content: space-between; padding: 20px 24px; font-size: 15px;}
     .apply-done { padding: 28px 22px;}
+    .modal { width: 100vw; max-width: 100vw; max-height: 100vh;}
+    .modal-card { max-height: 100vh; min-height: 100vh; border: 0; padding: 26px 18px 40px;}
+    .modal-head { margin-bottom: 28px; gap: 14px;}
+    .modal-close { width: 38px; height: 38px; font-size: 20px;}
     .p5-legal { grid-template-columns: 1fr; gap: 16px; padding: 32px 0 24px; font-size: 10.5px;}
     .p5-legal .info-r { text-align: left; align-self: start;}
     .p5-foot { flex-direction: column; gap: 6px; text-align: center;}
@@ -921,7 +965,7 @@
   </div>
   <nav class="nav-cta">
     <a href="#services" class="btn-ghost">서비스 소개</a>
-    <a href="#apply" class="btn-solid">신청서 작성 <span class="arr">→</span></a>
+    <button type="button" class="btn-solid" data-apply-open>신청서 작성 <span class="arr">→</span></button>
   </nav>
 </header>
 
@@ -939,9 +983,9 @@
     성장에 필요한 자금·제도·자산 전략을 설계합니다.
   </p>
   <div class="cta-row">
-    <a href="#apply" class="cta">
+    <button type="button" class="cta" data-apply-open>
       우리 기업 성장전략 진단<span class="arrow">→</span>
-    </a>
+    </button>
     <a href="tel:1533-5967" class="cta cta-tel">
       T. 1533-5967
     </a>
@@ -1166,96 +1210,14 @@
       기업의 현재와 목표에 맞는 성장전략을 확인해보세요.
     </p>
 
-    <form class="apply reveal" id="apply" action="/api/apply" method="post" novalidate>
-      <div class="apply-grid" id="applyFields">
-
-        <div class="fld c6">
-          <label for="f-company">회사명<span class="req">*</span></label>
-          <input type="text" id="f-company" name="company" maxlength="100" autocomplete="organization" required>
-          <p class="err" data-err="company"></p>
-        </div>
-
-        <div class="fld c6">
-          <label for="f-name">담당자명<span class="req">*</span></label>
-          <input type="text" id="f-name" name="name" maxlength="50" autocomplete="name" required>
-          <p class="err" data-err="name"></p>
-        </div>
-
-        <div class="fld c6">
-          <label for="f-phone">연락처<span class="req">*</span></label>
-          <input type="tel" id="f-phone" name="phone" maxlength="40" inputmode="tel" autocomplete="tel" placeholder="010-0000-0000" required>
-          <p class="err" data-err="phone"></p>
-        </div>
-
-        <div class="fld c6">
-          <label for="f-industry">업종</label>
-          <select id="f-industry" name="industry" class="empty">
-            <option value="">선택해주세요</option>
-            <option value="제조업">제조업</option>
-            <option value="서비스업">서비스업</option>
-            <option value="도소매업">도소매업</option>
-            <option value="정보통신업">정보통신업</option>
-            <option value="건설업">건설업</option>
-            <option value="기타">기타</option>
-          </select>
-          <p class="err" data-err="industry"></p>
-        </div>
-
-        <div class="fld c6">
-          <label for="f-revenue">연매출 규모</label>
-          <select id="f-revenue" name="revenue" class="empty">
-            <option value="">선택해주세요</option>
-            <option value="1억 미만">1억 미만</option>
-            <option value="1억 ~ 5억">1억 ~ 5억</option>
-            <option value="5억 ~ 10억">5억 ~ 10억</option>
-            <option value="10억 이상">10억 이상</option>
-          </select>
-          <p class="err" data-err="revenue"></p>
-        </div>
-
-        <div class="fld c12">
-          <span class="lab">관심 서비스<span class="opt">중복 선택 가능</span></span>
-          <div class="chips">
-            <label class="chip"><input type="checkbox" name="services" value="정책자금"><span>정책자금</span></label>
-            <label class="chip"><input type="checkbox" name="services" value="기업인증"><span>기업인증</span></label>
-            <label class="chip"><input type="checkbox" name="services" value="법인전환"><span>법인전환</span></label>
-            <label class="chip"><input type="checkbox" name="services" value="사옥마련"><span>사옥마련</span></label>
-            <label class="chip"><input type="checkbox" name="services" value="기타"><span>기타</span></label>
-          </div>
-        </div>
-
-        <div class="fld c12">
-          <label for="f-message">문의 내용<span class="opt">선택</span></label>
-          <textarea id="f-message" name="message" maxlength="2000" placeholder="현재 상황이나 궁금하신 점을 적어주세요."></textarea>
-          <p class="err" data-err="message"></p>
-        </div>
-
-        <label class="consent">
-          <input type="checkbox" name="consent" value="on" required>
-          <span>상담 목적의 <a href="/privacy.html" target="_blank" rel="noopener">개인정보 수집·이용</a>에 동의합니다.<span class="req">(필수)</span></span>
-        </label>
-        <p class="err block" data-err="consent"></p>
-
-        <div class="hp" aria-hidden="true">
-          <label for="f-website">website</label>
-          <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
-        </div>
-
-        <div class="apply-actions">
-          <button type="submit" class="apply-submit" id="applySubmit">신청서 제출<span class="arr">→</span></button>
-          <a href="tel:1533-5967" class="p5-cta p5-cta-tel">T. 1533-5967</a>
-        </div>
-
-        <p class="err block" data-err="_form"></p>
-        <p class="apply-note">접수 후 영업일 기준 1일 내에 연락드립니다.</p>
-      </div>
-
-      <div class="apply-done" id="applyDone" hidden>
-        <h3>신청이 접수되었습니다.</h3>
-        <p>영업일 기준 1일 내에 담당자가 연락드립니다.<br>
-           급한 사안은 <a href="tel:1533-5967">1533-5967</a>로 전화 주세요.</p>
-      </div>
-    </form>
+    <div class="p5-cta-row reveal">
+      <button type="button" class="p5-cta" data-apply-open>
+        우리 기업 성장전략 진단<span class="arr">→</span>
+      </button>
+      <a href="tel:1533-5967" class="p5-cta p5-cta-tel">
+        T. 1533-5967
+      </a>
+    </div>
 
     <div class="p5-signature reveal">
       LEADJAEIN · 기업 성장전략 컨설팅
@@ -1281,6 +1243,110 @@
     <span>↳ 기업 성장전략 컨설팅</span>
   </div>
 </section>
+
+<dialog class="modal" id="applyModal" aria-labelledby="applyModalTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-heading">
+        <div class="modal-label">05 / CONSULTATION</div>
+        <h2 class="modal-title" id="applyModalTitle">기업진단 신청</h2>
+        <p class="modal-sub">기업의 현재와 목표에 맞는 성장전략을 확인해보세요.</p>
+      </div>
+      <button type="button" class="modal-close" id="applyClose" aria-label="닫기">&times;</button>
+    </div>
+
+      <form class="apply" id="apply" action="/api/apply" method="post" novalidate>
+        <div class="apply-grid" id="applyFields">
+
+          <div class="fld c6">
+            <label for="f-company">회사명<span class="req">*</span></label>
+            <input type="text" id="f-company" name="company" maxlength="100" autocomplete="organization" required>
+            <p class="err" data-err="company"></p>
+          </div>
+
+          <div class="fld c6">
+            <label for="f-name">담당자명<span class="req">*</span></label>
+            <input type="text" id="f-name" name="name" maxlength="50" autocomplete="name" required>
+            <p class="err" data-err="name"></p>
+          </div>
+
+          <div class="fld c6">
+            <label for="f-phone">연락처<span class="req">*</span></label>
+            <input type="tel" id="f-phone" name="phone" maxlength="40" inputmode="tel" autocomplete="tel" placeholder="010-0000-0000" required>
+            <p class="err" data-err="phone"></p>
+          </div>
+
+          <div class="fld c6">
+            <label for="f-industry">업종</label>
+            <select id="f-industry" name="industry" class="empty">
+              <option value="">선택해주세요</option>
+              <option value="제조업">제조업</option>
+              <option value="서비스업">서비스업</option>
+              <option value="도소매업">도소매업</option>
+              <option value="정보통신업">정보통신업</option>
+              <option value="건설업">건설업</option>
+              <option value="기타">기타</option>
+            </select>
+            <p class="err" data-err="industry"></p>
+          </div>
+
+          <div class="fld c6">
+            <label for="f-revenue">연매출 규모</label>
+            <select id="f-revenue" name="revenue" class="empty">
+              <option value="">선택해주세요</option>
+              <option value="1억 미만">1억 미만</option>
+              <option value="1억 ~ 5억">1억 ~ 5억</option>
+              <option value="5억 ~ 10억">5억 ~ 10억</option>
+              <option value="10억 이상">10억 이상</option>
+            </select>
+            <p class="err" data-err="revenue"></p>
+          </div>
+
+          <div class="fld c12">
+            <span class="lab">관심 서비스<span class="opt">중복 선택 가능</span></span>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="services" value="정책자금"><span>정책자금</span></label>
+              <label class="chip"><input type="checkbox" name="services" value="기업인증"><span>기업인증</span></label>
+              <label class="chip"><input type="checkbox" name="services" value="법인전환"><span>법인전환</span></label>
+              <label class="chip"><input type="checkbox" name="services" value="사옥마련"><span>사옥마련</span></label>
+              <label class="chip"><input type="checkbox" name="services" value="기타"><span>기타</span></label>
+            </div>
+          </div>
+
+          <div class="fld c12">
+            <label for="f-message">문의 내용<span class="opt">선택</span></label>
+            <textarea id="f-message" name="message" maxlength="2000" placeholder="현재 상황이나 궁금하신 점을 적어주세요."></textarea>
+            <p class="err" data-err="message"></p>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" name="consent" value="on" required>
+            <span>상담 목적의 <a href="/privacy.html" target="_blank" rel="noopener">개인정보 수집·이용</a>에 동의합니다.<span class="req">(필수)</span></span>
+          </label>
+          <p class="err block" data-err="consent"></p>
+
+          <div class="hp" aria-hidden="true">
+            <label for="f-website">website</label>
+            <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="apply-actions">
+            <button type="submit" class="apply-submit" id="applySubmit">신청서 제출<span class="arr">→</span></button>
+            <a href="tel:1533-5967" class="p5-cta p5-cta-tel">T. 1533-5967</a>
+          </div>
+
+          <p class="err block" data-err="_form"></p>
+          <p class="apply-note">접수 후 영업일 기준 1일 내에 연락드립니다.</p>
+        </div>
+
+        <div class="apply-done" id="applyDone" hidden>
+          <h3>신청이 접수되었습니다.</h3>
+          <p>영업일 기준 1일 내에 담당자가 연락드립니다.<br>
+             급한 사안은 <a href="tel:1533-5967">1533-5967</a>로 전화 주세요.</p>
+        </div>
+      </form>
+  </div>
+</dialog>
 
 <script>
   // Scroll reveal — fade + rise, one-shot per element
@@ -1355,14 +1421,18 @@
     ctaObserver.observe(cta);
   })();
 
-  // 신청 폼 — /api/apply 로 전송
+  // 신청 폼 — 모달 열기/닫기 + /api/apply 로 전송
   (function () {
-    var form = document.getElementById('apply');
-    if (!form) return;
+    var modal = document.getElementById('applyModal');
+    var form  = document.getElementById('apply');
+    if (!modal || !form) return;
+
     var fields = document.getElementById('applyFields');
     var done   = document.getElementById('applyDone');
     var btn    = document.getElementById('applySubmit');
+    var closeBtn = document.getElementById('applyClose');
     var FALLBACK = '전송에 실패했습니다. 잠시 후 다시 시도하시거나 1533-5967로 전화 주세요.';
+    var lastFocused = null;
 
     function clearErrors() {
       var list = form.querySelectorAll('[data-err]');
@@ -1379,6 +1449,56 @@
         firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
+    function resetToBlank() {
+      form.reset();
+      clearErrors();
+      fields.hidden = false;
+      done.hidden = true;
+      var sels = form.querySelectorAll('select');
+      for (var i = 0; i < sels.length; i++) sels[i].classList.add('empty');
+      var card = modal.querySelector('.modal-card');
+      if (card) card.scrollTop = 0;
+    }
+
+    function openModal() {
+      lastFocused = document.activeElement;
+      // 이미 접수를 마친 상태로 닫았다면 새 폼으로 되돌린다
+      if (done.hidden === false) resetToBlank();
+      if (typeof modal.showModal === 'function') {
+        modal.showModal();
+      } else {
+        modal.setAttribute('open', '');   // 아주 오래된 브라우저 대비
+      }
+      document.body.classList.add('modal-open');
+      var first = document.getElementById('f-company');
+      if (first && !fields.hidden) {
+        try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); }
+      }
+    }
+    function closeModal() {
+      if (typeof modal.close === 'function' && modal.open) modal.close();
+      else modal.removeAttribute('open');
+      document.body.classList.remove('modal-open');
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    var triggers = document.querySelectorAll('[data-apply-open]');
+    for (var t = 0; t < triggers.length; t++) {
+      triggers[t].addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+      });
+    }
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    // Esc 로 닫을 때도 스크롤 잠금을 푼다
+    modal.addEventListener('close', function () {
+      document.body.classList.remove('modal-open');
+    });
+    // 배경(backdrop) 클릭으로 닫기 — 카드 바깥을 눌렀을 때만
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
 
     // 미선택 상태의 select 는 흐리게
     var sels = form.querySelectorAll('select');
@@ -1425,7 +1545,9 @@
         if (j && j.ok === true) {
           fields.hidden = true;
           done.hidden = false;
-          if (done.scrollIntoView) done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          var card = modal.querySelector('.modal-card');
+          if (card) card.scrollTop = 0;
+          if (closeBtn && closeBtn.focus) closeBtn.focus();
           return;
         }
         restore();

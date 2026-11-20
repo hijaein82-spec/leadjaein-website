@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=PT+Mono&display=swap" rel="stylesheet">
-<script async src="https://tally.so/widgets/embed.js"></script>
 <style>
   :root {
     --bg: #ffffff;
@@ -639,6 +638,107 @@
     text-transform: uppercase;
   }
 
+  /* ============================================================
+     APPLY FORM — page 5 (dark)
+  ============================================================ */
+  .apply { grid-column: 1 / -1; position: relative; scroll-margin-top: 112px;}
+  .apply-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px 24px;}
+  .fld { display: flex; flex-direction: column; gap: 10px;}
+  .fld.c6 { grid-column: span 6;}
+  .fld.c12 { grid-column: 1 / -1;}
+  .fld label, .fld .lab {
+    font-family: 'PT Mono'; font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255, 255, 255, 0.55);
+  }
+  .fld .opt { text-transform: none; letter-spacing: 0; color: rgba(255, 255, 255, 0.35); margin-left: 8px;}
+  .req { color: #EAAC00; margin-left: 5px;}
+  .apply input[type="text"], .apply input[type="tel"], .apply select, .apply textarea {
+    font-family: inherit; font-size: 16px; color: #ffffff; width: 100%;
+    background: transparent; border: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+    padding: 10px 0 12px; border-radius: 0;
+    transition: border-color 0.2s ease;
+  }
+  .apply textarea { resize: vertical; min-height: 96px; line-height: 1.6;}
+  .apply input::placeholder, .apply textarea::placeholder { color: rgba(255, 255, 255, 0.3);}
+  .apply input:focus, .apply select:focus, .apply textarea:focus {
+    outline: none; border-bottom-color: #EAAC00;
+  }
+  .apply select {
+    appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 28px;
+    background-image: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.55) 50%),
+                      linear-gradient(135deg, rgba(255, 255, 255, 0.55) 50%, transparent 50%);
+    background-position: calc(100% - 12px) 21px, calc(100% - 7px) 21px;
+    background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
+  }
+  .apply select option { background: #0a0a0a; color: #ffffff;}
+  .apply select.empty { color: rgba(255, 255, 255, 0.3);}
+
+  /* 관심 서비스 — 선택 칩 */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px;}
+  .chip input { position: absolute; opacity: 0; width: 0; height: 0;}
+  .chip span {
+    display: inline-block; padding: 11px 18px; font-size: 14px; cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.28); color: rgba(255, 255, 255, 0.75);
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    user-select: none;
+  }
+  .chip span:hover { border-color: rgba(255, 255, 255, 0.6);}
+  .chip input:checked + span { background: #EAAC00; border-color: #EAAC00; color: #0a0a0a; font-weight: 500;}
+  .chip input:focus-visible + span { outline: 2px solid #EAAC00; outline-offset: 2px;}
+
+  /* 개인정보 동의 */
+  .consent {
+    grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start;
+    font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.7); cursor: pointer;
+  }
+  .consent input {
+    appearance: none; -webkit-appearance: none; flex: 0 0 auto; cursor: pointer;
+    width: 19px; height: 19px; margin-top: 1px; border-radius: 0;
+    border: 1px solid rgba(255, 255, 255, 0.4); background: transparent;
+    display: grid; place-content: center;
+  }
+  .consent input:checked { background: #EAAC00; border-color: #EAAC00;}
+  .consent input:checked::after { content: '✓'; color: #0a0a0a; font-size: 13px; line-height: 1;}
+  .consent input:focus-visible { outline: 2px solid #EAAC00; outline-offset: 2px;}
+  .consent a { color: #EAAC00; text-decoration: underline; text-underline-offset: 3px;}
+
+  /* 허니팟 — 사람에게 보이지 않는 칸 */
+  .hp { position: absolute; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden;}
+
+  /* 제출 */
+  .apply-actions {
+    grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 16px;
+    align-items: stretch; margin-top: 10px;
+  }
+  .apply-submit {
+    display: inline-flex; align-items: center; gap: 14px; cursor: pointer;
+    background: #EAAC00; color: #0a0a0a; border: 1px solid #EAAC00;
+    padding: 22px 40px 24px; font-family: inherit;
+    font-size: clamp(16px, 1.2vw, 20px); font-weight: 500; letter-spacing: -0.01em;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+  .apply-submit .arr { font-family: 'PT Mono'; transition: transform 0.25s ease;}
+  .apply-submit:hover:not(:disabled) { background: transparent; color: #EAAC00;}
+  .apply-submit:hover:not(:disabled) .arr { transform: translateX(6px);}
+  .apply-submit:disabled { opacity: 0.45; cursor: progress;}
+
+  /* 오류 · 안내 · 완료 */
+  .err { font-size: 12.5px; line-height: 1.5; color: #ff7a7a;}
+  .err:empty { display: none;}
+  .err.block { grid-column: 1 / -1;}
+  .apply-note {
+    grid-column: 1 / -1; font-family: 'PT Mono'; font-size: 11px;
+    letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.4);
+  }
+  .apply-done { grid-column: 1 / -1; border: 1px solid #EAAC00; padding: 36px 32px;}
+  .apply-done h3 {
+    font-size: clamp(22px, 2.4vw, 32px); font-weight: 500;
+    letter-spacing: -0.025em; color: #EAAC00; margin-bottom: 14px;
+  }
+  .apply-done p { font-size: 15px; line-height: 1.7; color: rgba(255, 255, 255, 0.75);}
+  .apply-done a { color: #EAAC00;}
+  [hidden] { display: none !important;}
+
   /* Business info block — legal footer */
   .p5-legal {
     padding: 40px 0 32px;
@@ -772,6 +872,12 @@
     .p5-cta { width: 100%; justify-content: space-between; padding: 20px 24px; font-size: 15px;}
     .p5-cta.p5-cta-tel { justify-content: center; gap: 10px;}
     .p5-signature { margin-top: 48px; font-size: 10px;}
+    .apply { scroll-margin-top: 164px;}
+    .apply-grid { gap: 24px 16px;}
+    .fld.c6 { grid-column: 1 / -1;}
+    .apply-actions { flex-direction: column; gap: 12px;}
+    .apply-submit { width: 100%; justify-content: space-between; padding: 20px 24px; font-size: 15px;}
+    .apply-done { padding: 28px 22px;}
     .p5-legal { grid-template-columns: 1fr; gap: 16px; padding: 32px 0 24px; font-size: 10.5px;}
     .p5-legal .info-r { text-align: left; align-self: start;}
     .p5-foot { flex-direction: column; gap: 6px; text-align: center;}
@@ -815,7 +921,7 @@
   </div>
   <nav class="nav-cta">
     <a href="#services" class="btn-ghost">서비스 소개</a>
-    <a href="#apply" class="btn-solid" data-tally-open="q4qkOk" data-tally-layout="modal" data-tally-emoji-animation="none">신청서 작성 <span class="arr">→</span></a>
+    <a href="#apply" class="btn-solid">신청서 작성 <span class="arr">→</span></a>
   </nav>
 </header>
 
@@ -833,7 +939,7 @@
     성장에 필요한 자금·제도·자산 전략을 설계합니다.
   </p>
   <div class="cta-row">
-    <a href="#contact" class="cta" data-tally-open="q4qkOk" data-tally-layout="modal" data-tally-emoji-animation="none">
+    <a href="#apply" class="cta">
       우리 기업 성장전략 진단<span class="arrow">→</span>
     </a>
     <a href="tel:1533-5967" class="cta cta-tel">
@@ -1060,14 +1166,96 @@
       기업의 현재와 목표에 맞는 성장전략을 확인해보세요.
     </p>
 
-    <div class="p5-cta-row reveal">
-      <a href="#" class="p5-cta" data-tally-open="q4qkOk" data-tally-layout="modal" data-tally-emoji-animation="none">
-        우리 기업 성장전략 진단<span class="arr">→</span>
-      </a>
-      <a href="tel:1533-5967" class="p5-cta p5-cta-tel">
-        T. 1533-5967
-      </a>
-    </div>
+    <form class="apply reveal" id="apply" action="/api/apply" method="post" novalidate>
+      <div class="apply-grid" id="applyFields">
+
+        <div class="fld c6">
+          <label for="f-company">회사명<span class="req">*</span></label>
+          <input type="text" id="f-company" name="company" maxlength="100" autocomplete="organization" required>
+          <p class="err" data-err="company"></p>
+        </div>
+
+        <div class="fld c6">
+          <label for="f-name">담당자명<span class="req">*</span></label>
+          <input type="text" id="f-name" name="name" maxlength="50" autocomplete="name" required>
+          <p class="err" data-err="name"></p>
+        </div>
+
+        <div class="fld c6">
+          <label for="f-phone">연락처<span class="req">*</span></label>
+          <input type="tel" id="f-phone" name="phone" maxlength="40" inputmode="tel" autocomplete="tel" placeholder="010-0000-0000" required>
+          <p class="err" data-err="phone"></p>
+        </div>
+
+        <div class="fld c6">
+          <label for="f-industry">업종</label>
+          <select id="f-industry" name="industry" class="empty">
+            <option value="">선택해주세요</option>
+            <option value="제조업">제조업</option>
+            <option value="서비스업">서비스업</option>
+            <option value="도소매업">도소매업</option>
+            <option value="정보통신업">정보통신업</option>
+            <option value="건설업">건설업</option>
+            <option value="기타">기타</option>
+          </select>
+          <p class="err" data-err="industry"></p>
+        </div>
+
+        <div class="fld c6">
+          <label for="f-revenue">연매출 규모</label>
+          <select id="f-revenue" name="revenue" class="empty">
+            <option value="">선택해주세요</option>
+            <option value="1억 미만">1억 미만</option>
+            <option value="1억 ~ 5억">1억 ~ 5억</option>
+            <option value="5억 ~ 10억">5억 ~ 10억</option>
+            <option value="10억 이상">10억 이상</option>
+          </select>
+          <p class="err" data-err="revenue"></p>
+        </div>
+
+        <div class="fld c12">
+          <span class="lab">관심 서비스<span class="opt">중복 선택 가능</span></span>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="services" value="정책자금"><span>정책자금</span></label>
+            <label class="chip"><input type="checkbox" name="services" value="기업인증"><span>기업인증</span></label>
+            <label class="chip"><input type="checkbox" name="services" value="법인전환"><span>법인전환</span></label>
+            <label class="chip"><input type="checkbox" name="services" value="사옥마련"><span>사옥마련</span></label>
+            <label class="chip"><input type="checkbox" name="services" value="기타"><span>기타</span></label>
+          </div>
+        </div>
+
+        <div class="fld c12">
+          <label for="f-message">문의 내용<span class="opt">선택</span></label>
+          <textarea id="f-message" name="message" maxlength="2000" placeholder="현재 상황이나 궁금하신 점을 적어주세요."></textarea>
+          <p class="err" data-err="message"></p>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" name="consent" value="on" required>
+          <span>상담 목적의 <a href="/privacy.html" target="_blank" rel="noopener">개인정보 수집·이용</a>에 동의합니다.<span class="req">(필수)</span></span>
+        </label>
+        <p class="err block" data-err="consent"></p>
+
+        <div class="hp" aria-hidden="true">
+          <label for="f-website">website</label>
+          <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="apply-actions">
+          <button type="submit" class="apply-submit" id="applySubmit">신청서 제출<span class="arr">→</span></button>
+          <a href="tel:1533-5967" class="p5-cta p5-cta-tel">T. 1533-5967</a>
+        </div>
+
+        <p class="err block" data-err="_form"></p>
+        <p class="apply-note">접수 후 영업일 기준 1일 내에 연락드립니다.</p>
+      </div>
+
+      <div class="apply-done" id="applyDone" hidden>
+        <h3>신청이 접수되었습니다.</h3>
+        <p>영업일 기준 1일 내에 담당자가 연락드립니다.<br>
+           급한 사안은 <a href="tel:1533-5967">1533-5967</a>로 전화 주세요.</p>
+      </div>
+    </form>
 
     <div class="p5-signature reveal">
       LEADJAEIN · 기업 성장전략 컨설팅
@@ -1080,7 +1268,8 @@
       Business Reg. No. 671-11-02432 · CEO Jae-in Choi<br>
       621-202, 27, Jungdong-ro 280beon-gil, Wonmi-gu,<br>
       Bucheon-si, Gyeonggi-do, 14523, Republic of Korea<br>
-      T. <a href="tel:1533-5967">1533-5967</a> · <a href="mailto:hijaein82@gmail.com">hijaein82@gmail.com</a>
+      T. <a href="tel:1533-5967">1533-5967</a> · <a href="mailto:hijaein82@gmail.com">hijaein82@gmail.com</a><br>
+      <a href="/privacy.html">개인정보처리방침</a>
     </div>
     <div class="info-r">
       Management Consulting
@@ -1164,6 +1353,89 @@
       });
     }, { threshold: [0.5] });
     ctaObserver.observe(cta);
+  })();
+
+  // 신청 폼 — /api/apply 로 전송
+  (function () {
+    var form = document.getElementById('apply');
+    if (!form) return;
+    var fields = document.getElementById('applyFields');
+    var done   = document.getElementById('applyDone');
+    var btn    = document.getElementById('applySubmit');
+    var FALLBACK = '전송에 실패했습니다. 잠시 후 다시 시도하시거나 1533-5967로 전화 주세요.';
+
+    function clearErrors() {
+      var list = form.querySelectorAll('[data-err]');
+      for (var i = 0; i < list.length; i++) list[i].textContent = '';
+    }
+    function showErrors(errs) {
+      var firstEl = null;
+      for (var k in errs) {
+        if (!Object.prototype.hasOwnProperty.call(errs, k)) continue;
+        var el = form.querySelector('[data-err="' + k + '"]');
+        if (el) { el.textContent = errs[k]; if (!firstEl) firstEl = el; }
+      }
+      if (firstEl && firstEl.scrollIntoView) {
+        firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // 미선택 상태의 select 는 흐리게
+    var sels = form.querySelectorAll('select');
+    for (var i = 0; i < sels.length; i++) {
+      sels[i].addEventListener('change', function () {
+        this.classList.toggle('empty', !this.value);
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearErrors();
+
+      var fd = new FormData(form);
+      var payload = {
+        company:  fd.get('company')  || '',
+        name:     fd.get('name')     || '',
+        phone:    fd.get('phone')    || '',
+        industry: fd.get('industry') || '',
+        revenue:  fd.get('revenue')  || '',
+        message:  fd.get('message')  || '',
+        services: fd.getAll ? fd.getAll('services') : [],
+        consent:  fd.get('consent') === 'on',
+        website:  fd.get('website')  || ''
+      };
+
+      var label = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '전송 중...';
+
+      function restore() { btn.disabled = false; btn.innerHTML = label; }
+
+      fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) {
+        return r.text().then(function (t) {
+          var j = null;
+          try { j = JSON.parse(t); } catch (err) { j = null; }
+          return j;
+        });
+      }).then(function (j) {
+        if (j && j.ok === true) {
+          fields.hidden = true;
+          done.hidden = false;
+          if (done.scrollIntoView) done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        restore();
+        if (j && j.errors) { showErrors(j.errors); return; }
+        showErrors({ _form: (j && j.message) || FALLBACK });
+      }).catch(function () {
+        restore();
+        showErrors({ _form: FALLBACK });
+      });
+    });
   })();
 
 </script>

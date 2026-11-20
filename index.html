@@ -641,7 +641,7 @@
   }
 
   /* ============================================================
-     APPLY FORM — page 5 (dark)
+     APPLY FORM — 모달 안 (흰 배경)
   ============================================================ */
   .apply { position: relative;}
   .apply-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 30px 24px;}
@@ -650,59 +650,59 @@
   .fld.c12 { grid-column: 1 / -1;}
   .fld label, .fld .lab {
     font-family: 'PT Mono'; font-size: 11px; letter-spacing: 0.12em;
-    text-transform: uppercase; color: rgba(255, 255, 255, 0.55);
+    text-transform: uppercase; color: #6a6a6a;
   }
-  .fld .opt { text-transform: none; letter-spacing: 0; color: rgba(255, 255, 255, 0.35); margin-left: 8px;}
-  .req { color: #EAAC00; margin-left: 5px;}
+  .fld .opt { text-transform: none; letter-spacing: 0; color: #8a8a8a; margin-left: 8px;}
+  .req { color: #d72b2b; margin-left: 5px;}
   .apply input[type="text"], .apply input[type="tel"], .apply select, .apply textarea {
-    font-family: inherit; font-size: 16px; color: #ffffff; width: 100%;
-    background: transparent; border: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+    font-family: inherit; font-size: 16px; color: #0a0a0a; width: 100%;
+    background: transparent; border: 0; border-bottom: 1px solid #d5d5d5;
     padding: 10px 0 12px; border-radius: 0;
     transition: border-color 0.2s ease;
   }
   .apply textarea { resize: vertical; min-height: 96px; line-height: 1.6;}
-  .apply input::placeholder, .apply textarea::placeholder { color: rgba(255, 255, 255, 0.3);}
+  .apply input::placeholder, .apply textarea::placeholder { color: #9a9a9a;}
   .apply input:focus, .apply select:focus, .apply textarea:focus {
-    outline: none; border-bottom-color: #EAAC00;
+    outline: none; border-bottom-color: #0a0a0a;
   }
   .apply select {
     appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 28px;
-    background-image: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.55) 50%),
-                      linear-gradient(135deg, rgba(255, 255, 255, 0.55) 50%, transparent 50%);
+    background-image: linear-gradient(45deg, transparent 50%, rgba(10, 10, 10, 0.55) 50%),
+                      linear-gradient(135deg, rgba(10, 10, 10, 0.55) 50%, transparent 50%);
     background-position: calc(100% - 12px) 21px, calc(100% - 7px) 21px;
     background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
   }
-  .apply select option { background: #0a0a0a; color: #ffffff;}
-  .apply select.empty { color: rgba(255, 255, 255, 0.3);}
+  .apply select option { background: #ffffff; color: #0a0a0a;}
+  .apply select.empty { color: #9a9a9a;}
 
   /* 관심 서비스 — 선택 칩 */
   .chips { display: flex; flex-wrap: wrap; gap: 10px;}
   .chip input { position: absolute; opacity: 0; width: 0; height: 0;}
   .chip span {
     display: inline-block; padding: 11px 18px; font-size: 14px; cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.28); color: rgba(255, 255, 255, 0.75);
+    border: 1px solid #d5d5d5; color: #3a3a3a;
     transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
     user-select: none;
   }
-  .chip span:hover { border-color: rgba(255, 255, 255, 0.6);}
+  .chip span:hover { border-color: #0a0a0a;}
   .chip input:checked + span { background: #EAAC00; border-color: #EAAC00; color: #0a0a0a; font-weight: 500;}
-  .chip input:focus-visible + span { outline: 2px solid #EAAC00; outline-offset: 2px;}
+  .chip input:focus-visible + span { outline: 2px solid #0a0a0a; outline-offset: 2px;}
 
   /* 개인정보 동의 */
   .consent {
     grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start;
-    font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.7); cursor: pointer;
+    font-size: 14px; line-height: 1.6; color: #555555; cursor: pointer;
   }
   .consent input {
     appearance: none; -webkit-appearance: none; flex: 0 0 auto; cursor: pointer;
     width: 19px; height: 19px; margin-top: 1px; border-radius: 0;
-    border: 1px solid rgba(255, 255, 255, 0.4); background: transparent;
+    border: 1px solid #b2b2b2; background: transparent;
     display: grid; place-content: center;
   }
   .consent input:checked { background: #EAAC00; border-color: #EAAC00;}
   .consent input:checked::after { content: '✓'; color: #0a0a0a; font-size: 13px; line-height: 1;}
-  .consent input:focus-visible { outline: 2px solid #EAAC00; outline-offset: 2px;}
-  .consent a { color: #EAAC00; text-decoration: underline; text-underline-offset: 3px;}
+  .consent input:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px;}
+  .consent a { color: #0a0a0a; text-decoration: underline; text-underline-offset: 3px;}
 
   /* 허니팟 — 사람에게 보이지 않는 칸 */
   .hp { position: absolute; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden;}
@@ -720,32 +720,38 @@
     transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
   }
   .apply-submit .arr { font-family: 'PT Mono'; transition: transform 0.25s ease;}
-  .apply-submit:hover:not(:disabled) { background: transparent; color: #EAAC00;}
+  .apply-submit:hover:not(:disabled) { background: #0a0a0a; color: #EAAC00; border-color: #0a0a0a;}
   .apply-submit:hover:not(:disabled) .arr { transform: translateX(6px);}
   .apply-submit:disabled { opacity: 0.45; cursor: progress;}
+  /* 전화 버튼 — p5(어두운 섹션) 기본값을 흰 배경용으로 덮어쓴다 */
+  .apply-actions .p5-cta-tel { color: #0a0a0a; border-color: #0a0a0a;}
+  .apply-actions .p5-cta-tel:hover { background: #0a0a0a; color: #ffffff; border-color: #0a0a0a;}
 
   /* 오류 · 안내 · 완료 */
-  .err { font-size: 12.5px; line-height: 1.5; color: #ff7a7a;}
+  .err { font-size: 12.5px; line-height: 1.5; color: #d72b2b;}
   .err:empty { display: none;}
   .err.block { grid-column: 1 / -1;}
   .apply-note {
     grid-column: 1 / -1; font-family: 'PT Mono'; font-size: 11px;
-    letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.06em; color: #6a6a6a;
   }
-  .apply-done { grid-column: 1 / -1; border: 1px solid #EAAC00; padding: 36px 32px;}
+  .apply-done {
+    grid-column: 1 / -1; border: 1px solid #e2e2e2; border-left: 3px solid #EAAC00;
+    background: #fafafa; padding: 36px 32px;
+  }
   .apply-done h3 {
     font-size: clamp(22px, 2.4vw, 32px); font-weight: 500;
-    letter-spacing: -0.025em; color: #EAAC00; margin-bottom: 14px;
+    letter-spacing: -0.025em; color: #0a0a0a; margin-bottom: 14px;
   }
-  .apply-done p { font-size: 15px; line-height: 1.7; color: rgba(255, 255, 255, 0.75);}
-  .apply-done a { color: #EAAC00;}
+  .apply-done p { font-size: 15px; line-height: 1.7; color: #555555;}
+  .apply-done a { color: #0a0a0a; text-decoration: underline; text-underline-offset: 3px;}
   [hidden] { display: none !important;}
 
   /* ============================================================
      APPLY MODAL
   ============================================================ */
   .modal {
-    border: 0; padding: 0; background: transparent; color: #ffffff;
+    border: 0; padding: 0; background: transparent; color: #0a0a0a;
     width: min(780px, calc(100vw - 48px));
     max-height: calc(100vh - 64px);
     overflow: visible;
@@ -754,8 +760,8 @@
   }
   .modal::backdrop { background: rgba(0, 0, 0, 0.78);}
   .modal-card {
-    background: #0a0a0a;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #ffffff;
+    border: 0;
     max-height: calc(100vh - 64px);
     overflow-y: auto;
     padding: 42px 44px 46px;
@@ -764,21 +770,21 @@
   .modal-heading { flex: 1 1 auto;}
   .modal-label {
     font-family: 'PT Mono'; font-size: 11px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #EAAC00; margin-bottom: 14px;
+    text-transform: uppercase; color: #6a6a6a; margin-bottom: 14px;
   }
   .modal-title {
     font-size: clamp(26px, 3.2vw, 38px); font-weight: 500;
     letter-spacing: -0.03em; line-height: 1.1;
   }
-  .modal-sub { margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: rgba(255, 255, 255, 0.6);}
+  .modal-sub { margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: #6a6a6a;}
   .modal-close {
     flex: 0 0 auto; width: 42px; height: 42px; cursor: pointer;
-    background: transparent; border: 1px solid rgba(255, 255, 255, 0.25);
-    color: rgba(255, 255, 255, 0.7); font-size: 22px; line-height: 1;
-    transition: border-color 0.18s ease, color 0.18s ease;
+    background: transparent; border: 1px solid #d5d5d5;
+    color: #6a6a6a; font-size: 22px; line-height: 1;
+    transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
   }
-  .modal-close:hover { border-color: #EAAC00; color: #EAAC00;}
-  .modal-close:focus-visible { outline: 2px solid #EAAC00; outline-offset: 2px;}
+  .modal-close:hover { border-color: #0a0a0a; background: #0a0a0a; color: #ffffff;}
+  .modal-close:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px;}
   body.modal-open { overflow: hidden;}
 
   /* Business info block — legal footer */

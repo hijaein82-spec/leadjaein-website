@@ -24,11 +24,15 @@ Tally를 떼어내고 사이트에 직접 만든 폼으로 바꿨습니다.
 1. 같은 시트에서 상단 메뉴 **확장 프로그램 → Apps Script** 를 클릭합니다.
 2. 새 탭에 코드 편집기가 열립니다. 안에 있던 기본 코드(`function myFunction() {}`)를 **전부 지웁니다.**
 3. 이 폴더의 **`Code.gs`** 파일 내용을 전부 복사해서 붙여넣습니다.
-4. 맨 위 `SHARED_SECRET` 값을 바꿉니다. 아무도 모르는 긴 문자열이면 됩니다.
+4. 맨 위 `SHARED_SECRET` 의 **따옴표 안쪽만** 바꿉니다. 아무도 모르는 긴 문자열이면 됩니다.
 
    ```javascript
    var SHARED_SECRET = 'leadjaein-7fK2mQ9xRt4vZp8w';   // ← 이렇게 본인만의 값으로
    ```
+
+   주석으로 표시된 구간 **딱 그 한 줄만** 고치세요.
+   바로 아래 `NOTIFY_TO`(알림 받을 주소)와 `SHEET_NAME` 줄을 덮어쓰면
+   `ReferenceError: NOTIFY_TO is not defined` 오류가 납니다.
 
    **이 값을 메모해 두세요.** 5단계에서 똑같이 입력해야 합니다.
 5. 상단의 저장 아이콘(💾)을 누릅니다.

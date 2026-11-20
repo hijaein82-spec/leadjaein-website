@@ -7,9 +7,20 @@
  * 아래 SHARED_SECRET 값은 Vercel 환경변수 APPLY_SECRET 과 반드시 동일해야 합니다.
  */
 
-var SHARED_SECRET = 'PASTE_YOUR_SECRET_HERE';   // ← 설치 시 교체
-var NOTIFY_TO     = 'hijaein82@gmail.com';      // 알림 받을 주소
-var SHEET_NAME    = '신청';
+/* ────────────────────────────────────────────────────────────
+   여기 한 줄만 고치면 됩니다. 아래 다른 줄은 지우지 마세요.
+   ──────────────────────────────────────────────────────────── */
+var SHARED_SECRET = 'PASTE_YOUR_SECRET_HERE';
+/* ──────────────── 여기까지. 아래는 그대로 둡니다 ──────────────── */
+
+var NOTIFY_TO  = 'hijaein82@gmail.com';   // 알림 받을 주소
+var SHEET_NAME = '신청';                   // 시트 탭 이름 (자동 생성됨)
+
+// 신청이 쌓일 스프레드시트 ID — 시트 주소창의 /d/ 와 /edit 사이 문자열.
+//   https://docs.google.com/spreadsheets/d/<<여기>>/edit
+// 비워두면 스크립트가 붙어 있는 시트를 사용한다.
+// (저장소가 공개이므로 실제 ID는 여기 적지 않는다. 배포된 스크립트에는 입력돼 있다.)
+var SPREADSHEET_ID = '';
 
 var HEADERS = ['접수시각', '회사명', '담당자명', '연락처', '업종',
                '연매출', '관심서비스', '문의내용', '개인정보동의', '유입경로'];
@@ -50,8 +61,17 @@ function doGet() {
 
 /* ---------- 내부 ---------- */
 
+function getBook_() {
+  if (SPREADSHEET_ID) return SpreadsheetApp.openById(SPREADSHEET_ID);
+  var active = SpreadsheetApp.getActiveSpreadsheet();
+  if (!active) {
+    throw new Error('SPREADSHEET_ID 가 비어 있고 연결된 시트도 없습니다. 상단의 SPREADSHEET_ID 를 채워주세요.');
+  }
+  return active;
+}
+
 function getSheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = getBook_();
   var sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
@@ -100,7 +120,7 @@ function sendMail_(d) {
     '개인정보 수집·이용 동의 : ' + (d.consent ? '동의' : '미동의'),
     '접수 시각 : ' + Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm:ss'),
     '',
-    '전체 목록: ' + SpreadsheetApp.getActiveSpreadsheet().getUrl()
+    '전체 목록: ' + getBook_().getUrl()
   ];
   MailApp.sendEmail({
     to: NOTIFY_TO,
